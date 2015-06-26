@@ -2,7 +2,7 @@
 //  OpenShift sample Node application
 var express = require('express');
 var fs      = require('fs');
-
+var quotes  = require('./quotes');
 
 /**
  *  Define the sample application.
@@ -101,8 +101,15 @@ var SampleApp = function() {
         };
 
         self.routes['/'] = function(req, res) {
-            res.setHeader('Content-Type', 'text/html');
-            res.send(self.cache_get('index.html') );
+            //res.setHeader('Content-Type', 'text/html');
+            //res.send(self.cache_get('index.html') );
+            res.render('index');
+
+        };
+        self.routes['/result'] = function(req, res) {
+          var message="voici les cotes pour "+req.param('symbSel');
+          var quoteopt=quotes.getOptionQuotes(req.param('symbSel'));
+          res.render('result',{message:quoteopt});
         };
     };
 
@@ -114,7 +121,7 @@ var SampleApp = function() {
     self.initializeServer = function() {
         self.createRoutes();
         self.app = express.createServer();
-
+        self.app.set('view engine','ejs');
         //  Add handlers for the app (from the routes).
         for (var r in self.routes) {
             self.app.get(r, self.routes[r]);
