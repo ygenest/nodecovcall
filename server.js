@@ -4,7 +4,7 @@ var express = require('express');
 var fs = require('fs');
 var quotes = require('./quotes');
 var request = require('request');
-var SpahQL= require('SpahQL');
+
 
 /**
  *  Define the sample application.
