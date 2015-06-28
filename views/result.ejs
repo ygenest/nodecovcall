@@ -3,6 +3,17 @@
 
 </head>
 <body>
-<%= message %>%>
+<table>
+<% for (var x=0;x<qtable.length;++x) { %>
+<tr>
+   <td>
+      <%= qtable[x][0] %>
+   </td>
+   <td>
+      <%= qtable[x][1] %>
+   </td>
+</tr>
+<% } %>
+</table>
 </body>
 </html>
