@@ -116,23 +116,43 @@ var SampleApp = function () {
 
         };
         self.routes['/result'] = function (req, res) {
-            var message = "voici les cotes pour " + req.param('symbSel');
+            var options = [];
             var symbol = req.param('symbSel');
+            options['nozint'] = req.param('nozint');
             var url = 'http://www.google.com/finance/option_chain?q=' + symbol + '&output=json'
             console.log(url);
-            request(url, function (error, response, body) {
+            request(url,  function (error, response, body) {
                 var qta;
                 if (!error && response.statusCode == 200) {
-                    console.log(body) // Show the HTML for the Google homepage.
-                    qta=quotes.getOptionQuotes(body);
+                    console.log(body) // Show the HTML.
+                    qta=quotes.getOptionQuotes(body,options);
+                    var expirations=quotes.getAllExpiry(body);
+                    for (x=0;x<expirations.length;x++) {
+                        if (x==0) continue;
+
+                        var expurl=url+"&expy="+expirations[x].y+"&expm="+expirations[x].m+"&expd="+expirations[x].d;
+                        request(expurl, qta,function (error, response, body) {
+
+                            if (!error && response.statusCode == 200) {
+
+                                var qta2=quotes.getOptionQuotes(body,options);
+                                console.log(qta2)
+                                qta=qta.concat(qta2);
+
+                                if (x==5 )res.render('result', {qtable: qta});
+                            }
+                            else {
+                                console.log('Error reading data2 ' + response.statusCode);
+                            }
+                        })
+                    }
 
                 }
                 else {
                     console.log('Error reading data ' + response.statusCode);
                 }
-                res.render('result', {qtable: qta});
-            })
 
+            });
 
         };
     };

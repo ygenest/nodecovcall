@@ -216,8 +216,17 @@
             <section>
                 <h2>Query details</h2>
                 <form name="params" action="result">
-                    <label for="symbSel">Select list:</label> <input name="symbSel" id="symbSel" type="text">
-                    <input type="submit" name="submit">
+                   <table>
+                      <tr>
+                         <td><input type="checkbox" name="nozint">No zero interest</td>
+                         <td><input type="checkbox" name="strikeover">Strike over price</td>
+                      </tr>
+                      <tr>
+                         <td><label for="symbSel">Select list:</label></td>
+                         <td><input name="symbSel" id="symbSel" type="text"></td>
+                      </tr>
+                     <tr><td><input type="submit" name="submit"></td></tr>
+                   </table>
                 </form>
                 <h3>Working in your local Git repository</h3>
                 <p>If you created your application from the command line and uploaded your SSH key, rhc will automatically download a copy of that source code repository (Git calls this 'cloning') to your local system.</p>
